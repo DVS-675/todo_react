@@ -1,17 +1,33 @@
-import React, { useContext } from "react";
-import Context from "../context";
+import React from "react";
 
-const TodoFooter = () => {
-  const { activeTodo, completedTodo } = useContext(Context);
+
+const TodoFooter = ({setStatus}) => {  
+
+  const statusHandler = (event) => {
+    setStatus(event.target.value)
+  };
+
   return (
     <div className="footer">
-      <button className="footer__all item">All</button>
-      <button className="footer__active item" onClick={() => activeTodo()}>
+      <button 
+      onClick={statusHandler} 
+      className="footer__all item" 
+      value="All">
+        All
+      </button>
+      <button
+        onClick={statusHandler}
+        className="footer__active item"
+        value="Active" 
+       
+      >
         Active
       </button>
       <button
+        onClick={statusHandler}
         className="footer__completed item"
-        onClick={() => completedTodo()}
+        value="Completed"
+        
       >
         Completed
       </button>

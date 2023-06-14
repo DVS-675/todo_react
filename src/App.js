@@ -1,5 +1,4 @@
-import React from "react";
-import "./App.css";
+import React, { useState, useEffect } from "react";
 import TodoList from "./Todo/TodoList";
 import Context from "./context";
 import AddTodo from "./Todo/AddTodo";
@@ -23,6 +22,26 @@ const App = () => {
       title: "Сделаны тесты",
     },
   ]);
+  const [status, setStatus] = useState("all");
+  const [filteredTodos, setFilteredTodos] = useState([]);
+
+  useEffect(() => {
+    filterHandler();
+  }, [todos, status]);
+
+  const filterHandler = () => {
+    switch (status) {
+      case "Completed":
+        setFilteredTodos(todos.filter((todo) => todo.completed === true));
+        break;
+      case "Active":
+        setFilteredTodos(todos.filter((todo) => todo.completed === false));
+        break;
+      default:
+        setFilteredTodos(todos);
+        break;
+    }
+  };
 
   const toggleTodo = (id) => {
     setTodos(
@@ -39,14 +58,6 @@ const App = () => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
-  const activeTodo = () => {
-    setTodos(todos.filter((todo) => todo.completed === false))
-  }
-
-  const completedTodo = () => {
-    setTodos(todos.filter((todo) => todo.completed === true))
-  }
-
   const addTodo = (title) => {
     setTodos(
       todos.concat([
@@ -60,16 +71,20 @@ const App = () => {
   };
 
   return (
-    <Context.Provider value={{ removeTodo, activeTodo, completedTodo }}>
+    <Context.Provider value={{ removeTodo }}>
       <div className="wrapper">
         <h1 className="wrapper__title">TODOS</h1>
         <AddTodo onCreate={addTodo} />
         {todos.length ? (
-          <TodoList todos={todos} onToggle={toggleTodo} />
+          <TodoList
+            filteredTodos={filteredTodos}
+            todos={todos}
+            onToggle={toggleTodo}
+          />
         ) : (
           <p>no Todos</p>
         )}
-        <TodoFooter />
+        <TodoFooter setStatus={setStatus} />
       </div>
     </Context.Provider>
   );

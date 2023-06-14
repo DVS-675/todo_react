@@ -26,6 +26,8 @@ const AddTodo = ({ onCreate }) => {
       input.clear();
     }
   };
+ 
+
   return (
     <form className="form" onSubmit={submitHandler}>        
       <input className="form__input" placeholder = 'What needs to be done?' {...input.bind} />

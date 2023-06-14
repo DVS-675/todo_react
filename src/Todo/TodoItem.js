@@ -2,26 +2,8 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import Context from "../context";
 
-const styles = {
-  li: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: ".5rem 1rem",
-    border: "1px solid  #ccc",
-    borderRadius: "4px",
-    marginBottom: ".5rem",
-  },
-  input: {
-    marginRight: "1rem",
-    width: "25px",
-    height: "15px",
-  },
-};
-
 const TodoItem = ({ todo, index, onChange }) => {
-  const { removeTodo } = useContext(Context);
-  
+  const { removeTodo } = useContext(Context);  
   const classes = ["todo_description"];
 
   if (todo.completed) {
@@ -29,12 +11,12 @@ const TodoItem = ({ todo, index, onChange }) => {
   }
 
   return (
-    <li style={styles.li}>
+    <li>
       <span className={classes.join(" ")}>
         <input
           type="checkbox"
           checked={todo.completed}
-          style={styles.input}
+          className="todo_checkbox"
           onChange={() => onChange(todo.id)}
         />
         <strong>{index + 1 + "."}</strong>
