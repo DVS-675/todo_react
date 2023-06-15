@@ -5,7 +5,7 @@ import AddTodo from "./Todo/AddTodo";
 import TodoFooter from "./Todo/TodoFooter";
 
 const App = () => {
-  const [todos, setTodos] = React.useState([
+  const [todos, setTodos] = useState([
     {
       id: 1,
       completed: false,
@@ -26,8 +26,14 @@ const App = () => {
   const [filteredTodos, setFilteredTodos] = useState([]);
 
   useEffect(() => {
+    getLocalTodos();
+  }, []);
+
+  useEffect(() => {
     filterHandler();
-  }, [todos, status]);
+    saveLocalTodos()
+    console.log(todos)    
+  }, [todos, status]);  
 
   const filterHandler = () => {
     switch (status) {
@@ -68,6 +74,21 @@ const App = () => {
         },
       ])
     );
+  };
+
+  //Save to local storage
+  const saveLocalTodos = () => {       
+    localStorage.setItem("todos", JSON.stringify(todos));      
+  };
+
+  const getLocalTodos = () => {
+    if (localStorage.getItem("todos") === null) {
+      localStorage.setItem("todos", JSON.stringify([]));
+    } else {
+      let todoLocal = JSON.parse(localStorage.getItem("todos"));
+      console.log(todoLocal)
+      setTodos(todoLocal);
+    }
   };
 
   return (
