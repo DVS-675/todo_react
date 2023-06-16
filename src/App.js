@@ -31,9 +31,9 @@ const App = () => {
 
   useEffect(() => {
     filterHandler();
-    saveLocalTodos()
-    console.log(todos)    
-  }, [todos, status]);  
+
+    console.log(todos);
+  }, [todos, status]);
 
   const filterHandler = () => {
     switch (status) {
@@ -50,35 +50,32 @@ const App = () => {
   };
 
   const toggleTodo = (id) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      })
-    );
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        todo.completed = !todo.completed;
+      }
+      return todo;
+    });
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   };
 
   const removeTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   };
 
   const addTodo = (title) => {
-    setTodos(
-      todos.concat([
-        {
-          title,
-          id: Date.now(),
-          completed: false,
-        },
-      ])
-    );
-  };
-
-  //Save to local storage
-  const saveLocalTodos = () => {       
-    localStorage.setItem("todos", JSON.stringify(todos));      
+    const newTodos = todos.concat([
+      {
+        title,
+        id: Date.now(),
+        completed: false,
+      },
+    ]);
+    setTodos(newTodos);
+    localStorage.setItem("todos", JSON.stringify(newTodos));
   };
 
   const getLocalTodos = () => {
@@ -86,7 +83,7 @@ const App = () => {
       localStorage.setItem("todos", JSON.stringify([]));
     } else {
       let todoLocal = JSON.parse(localStorage.getItem("todos"));
-      console.log(todoLocal)
+      console.log(todoLocal);
       setTodos(todoLocal);
     }
   };
